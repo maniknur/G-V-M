@@ -1,63 +1,86 @@
 # 🌍 Global Village Marketplace (GVM)
 
-**Global Village Marketplace (GVM)** is a blockchain-based escrow marketplace built on **Stellar Soroban** that connects local farmers with global buyers through secure and transparent smart contracts.
+Global Village Marketplace (GVM) is a blockchain-based escrow marketplace built on the Stellar network using Soroban smart contracts.
 
-The project demonstrates how decentralized escrow can reduce trust requirements in agricultural trade while enabling low-cost cross-border payments.
+The project aims to connect local farmers directly with global buyers through a transparent and trust-minimized escrow system, reducing dependency on intermediaries and enabling secure cross-border trade.
 
----
-
-## 🎯 Vision
-
-Millions of smallholder farmers lose a significant portion of their profits due to long intermediary chains, expensive international payment systems, and limited access to global markets.
-
-Global Village Marketplace aims to create a transparent marketplace where:
-
-* Farmers can access international buyers directly.
-* Buyers can securely lock payments in escrow.
-* Smart contracts automate transaction settlement.
-* Trust is minimized through blockchain verification.
+This repository contains a simplified MVP escrow contract deployed and tested on Stellar Testnet.
 
 ---
 
-## 🚀 MVP Smart Contract
+# 🎯 Problem Statement
 
-This repository contains a simplified Soroban escrow contract deployed on the **Stellar Testnet**.
+Smallholder farmers often face:
 
-### Contract Functions
+- Limited access to international markets
+- High transaction fees
+- Delayed payments
+- Long intermediary chains reducing profits
 
-| Function           | Description                       |
-| ------------------ | --------------------------------- |
-| `create_order`     | Creates a new escrow order        |
-| `lock_payment`     | Locks buyer funds into escrow     |
-| `confirm_delivery` | Marks delivery as completed       |
-| `get_order`        | Returns current order information |
+Global Village Marketplace explores how blockchain-based escrow can help create a more transparent and efficient trading process.
 
 ---
 
-## 🔄 Escrow Workflow
+# 💡 Solution
 
-```text
+The platform uses a Soroban smart contract to manage trade agreements between buyers and farmers.
+
+Instead of relying on a central intermediary, transaction states are enforced directly on-chain.
+
+Escrow workflow:
+
 Buyer
-   │
-   ▼
-Create Order
-   │
-   ▼
-Lock Payment
-   │
-   ▼
-Farmer Ships Goods
-   │
-   ▼
-Confirm Delivery
-   │
-   ▼
-Release Payment
-```
+→ Create Order
+
+Buyer
+→ Lock Payment
+
+Farmer
+→ Deliver Goods
+
+Admin / Oracle
+→ Confirm Delivery
+
+Smart Contract
+→ Complete Transaction
 
 ---
 
-## 📊 State Machine
+# 🚀 Features
+
+### Escrow Order Creation
+
+Buyers can create a trade agreement specifying:
+
+- Buyer address
+- Farmer address
+- Payment amount
+
+### Payment Locking
+
+The buyer locks funds into escrow before shipment.
+
+### Delivery Confirmation
+
+The order can only be completed after payment has been locked.
+
+### Order Status Tracking
+
+Order states are stored on-chain and can be queried at any time.
+
+### Security Checks
+
+Implemented validations include:
+
+- Amount must be greater than zero
+- Buyer and farmer cannot be the same address
+- Only the original buyer can lock payment
+- Invalid state transitions are prevented
+- Safe storage handling without unwrap-related crashes
+
+---
+
+# 🔄 Escrow State Machine
 
 ```text
 CREATED
@@ -69,118 +92,161 @@ LOCKED
 COMPLETED
 ```
 
----
+Status Codes:
 
-## 🛠 Technology Stack
-
-* Rust
-* Soroban SDK
-* Stellar Testnet
-* Stellar Laboratory
-* Smart Contracts
+| Value | Status |
+|---------|---------|
+| 0 | CREATED |
+| 1 | LOCKED |
+| 2 | COMPLETED |
 
 ---
 
-## 📦 Build Information
+# 📜 Smart Contract Functions
 
-### WASM
+## create_order()
 
-* File Size: **3124 bytes**
-* WASM Hash:
+Creates a new escrow order.
 
-```text
-48b6f438c7f3eec07ed70d60b2fcf06b085da12aba36e23774a8a6904494677b
-```
+Parameters:
+
+- buyer
+- farmer
+- amount
 
 ---
 
-## 🌐 Deployment
+## lock_payment()
 
-### Network
+Locks the escrow payment.
+
+Authorization:
+
+- Buyer signature required
+
+---
+
+## confirm_delivery()
+
+Marks the escrow as completed.
+
+Validation:
+
+- Order must be in LOCKED state
+
+---
+
+## get_order()
+
+Returns the current escrow information.
+
+---
+
+# 🛠 Technology Stack
+
+- Rust
+- Soroban SDK
+- Stellar Testnet
+- Stellar Laboratory
+- Soroban Smart Contracts
+
+---
+
+# 📦 Deployment Information
+
+## Network
 
 Stellar Testnet
 
-### Contract ID
+## Contract ID
 
 ```text
-CBEFNVNNEC7Z5QY6AHZCJJYG3QPYFTWHE46LXZY5RZZEK3BLJRZA2O45
+CBNHLV3A3FD75IDYHTF6JW5IZF46EJECB27KGLKQKYMLRMBLMHPGUT7G
 ```
 
-### Contract Explorer
+## WASM Hash
 
-https://lab.stellar.org/r/testnet/contract/CBEFNVNNEC7Z5QY6AHZCJJYG3QPYFTWHE46LXZY5RZZEK3BLJRZA2O45
+```text
+fd2b5e10e27e948b4cd06b19432060e40aba30f51941c34b43cf4618ff395ca1
+```
 
----
+## WASM Size
 
-## 🔗 Deployment Transactions
-
-### WASM Upload
-
-https://stellar.expert/explorer/testnet/tx/dbd4672c3381ce46a2b1b9a4ee32df5164ae9dce7f1d9d875bc24d059f3cad5f
-
-### Contract Deployment
-
-https://stellar.expert/explorer/testnet/tx/0b69066b8e7ae9765977320f176ba9d8d4c9e76b9654d0604d7b3b175e12c1b4
+```text
+3606 bytes
+```
 
 ---
 
-## 🧪 Tested Features
+# 🔗 Contract Explorer
 
-✅ Contract compilation
-
-✅ WASM deployment
-
-✅ Contract deployment
-
-✅ create_order()
-
-✅ lock_payment()
-
-✅ confirm_delivery()
-
-✅ get_order()
-
-✅ State transition validation
+https://lab.stellar.org/r/testnet/contract/CBNHLV3A3FD75IDYHTF6JW5IZF46EJECB27KGLKQKYMLRMBLMHPGUT7G
 
 ---
 
-## 🗺 Roadmap
+# 🔗 Deployment Transactions
 
-### Phase 1 (Current MVP)
+## Upload WASM
 
-* Single escrow contract
-* Basic order lifecycle
-* Stellar Testnet deployment
+https://stellar.expert/explorer/testnet/tx/cdff2942bd17bcd7fe8ad5392ea66db3d3761f503abf399f1fa678f9bdd497a6
 
-### Phase 2
+## Deploy Contract
 
-* Stablecoin integration (USDC/TUSDC)
-* Refund mechanism
-* Multi-order support
-
-### Phase 3
-
-* Farmer dashboard
-* Buyer dashboard
-* Freighter wallet integration
-* Delivery tracking
-
-### Phase 4
-
-* Cooperative verification
-* Anchor integration
-* Production deployment on Stellar Mainnet
+https://stellar.expert/explorer/testnet/tx/f8b91a69cbe9940fe1b3e9d9356f8bab3071bb750bc9c30feae09877db5d0a68
 
 ---
 
-## 🏆 Hackathon Context
+# 🧪 Tested Functions
 
-This project is inspired by the idea of enabling direct agricultural trade between Southeast Asian farmers and international buyers using Stellar's fast and low-cost blockchain infrastructure.
+Successfully tested on Stellar Testnet:
 
-The long-term vision is to support financial inclusion, transparent trade, and global market access for underserved farming communities.
+- ✅ create_order()
+- ✅ lock_payment()
+- ✅ confirm_delivery()
+- ✅ get_order()
 
 ---
 
-## 📄 License
+# 📈 Future Roadmap
+
+## Phase 1 (Current MVP)
+
+- Single escrow order
+- On-chain status tracking
+- Testnet deployment
+- Basic authorization controls
+
+## Phase 2
+
+- Stablecoin integration (USDC)
+- Refund mechanism
+- Multiple orders
+- Escrow expiration
+
+## Phase 3
+
+- Freighter wallet integration
+- Farmer dashboard
+- Buyer dashboard
+- Delivery tracking
+
+## Phase 4
+
+- Cooperative verification
+- Anchor integration
+- Oracle-based delivery confirmation
+- Mainnet deployment
+
+---
+
+# 🌏 Long-Term Vision
+
+Global Village Marketplace seeks to empower farmers by enabling direct access to global buyers through transparent and low-cost blockchain infrastructure.
+
+The long-term goal is to support fair trade, financial inclusion, and trusted agricultural commerce using Stellar technology.
+
+---
+
+# 📄 License
 
 MIT License

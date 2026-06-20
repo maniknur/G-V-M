@@ -1,8 +1,12 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contractimpl, contracttype,
-    Address, Env,
+    contract,
+    contractimpl,
+    contracttype,
+    symbol_short,
+    Address,
+    Env,
 };
 
 #[derive(Clone)]
@@ -37,25 +41,50 @@ impl GlobalVillageMarketplace {
     ) {
         buyer.require_auth();
 
+        if amount <= 0 {
+            panic!("Amount must be greater than zero");
+        }
+
+        if buyer == farmer {
+            panic!("Buyer and farmer cannot be the same");
+        }
+
         let escrow = Escrow {
-            buyer,
-            farmer,
+            buyer: buyer.clone(),
+            farmer: farmer.clone(),
             amount,
             status: Status::Created as u32,
         };
 
-        env.storage().persistent().set(&ESCROW_KEY, &escrow);
+        env.storage()
+            .persistent()
+            .set(&ESCROW_KEY, &escrow);
+
+        env.events().publish(
+            (symbol_short!("create"),),
+            amount,
+        );
     }
 
     // Buyer locks payment
-    pub fn lock_payment(env: Env, buyer: Address) {
+    pub fn lock_payment(
+        env: Env,
+        buyer: Address,
+    ) {
         buyer.require_auth();
 
-        let mut escrow: Escrow =
-            env.storage()
-                .persistent()
-                .get(&ESCROW_KEY)
-                .unwrap();
+        let mut escrow: Escrow = match env
+            .storage()
+            .persistent()
+            .get(&ESCROW_KEY)
+        {
+            Some(e) => e,
+            None => panic!("Order not found"),
+        };
+
+        if escrow.buyer != buyer {
+            panic!("Only buyer can lock payment");
+        }
 
         if escrow.status != Status::Created as u32 {
             panic!("Order not in CREATED state");
@@ -63,20 +92,28 @@ impl GlobalVillageMarketplace {
 
         escrow.status = Status::Locked as u32;
 
-        env.storage().persistent().set(
-            &ESCROW_KEY,
-            &escrow,
+        env.storage()
+            .persistent()
+            .set(&ESCROW_KEY, &escrow);
+
+        env.events().publish(
+            (symbol_short!("locked"),),
+            escrow.amount,
         );
     }
 
-    // Admin confirms delivery
-    pub fn confirm_delivery(env: Env) {
-
-        let mut escrow: Escrow =
-            env.storage()
-                .persistent()
-                .get(&ESCROW_KEY)
-                .unwrap();
+    // Confirm delivery
+    pub fn confirm_delivery(
+        env: Env,
+    ) {
+        let mut escrow: Escrow = match env
+            .storage()
+            .persistent()
+            .get(&ESCROW_KEY)
+        {
+            Some(e) => e,
+            None => panic!("Order not found"),
+        };
 
         if escrow.status != Status::Locked as u32 {
             panic!("Payment not locked");
@@ -84,17 +121,22 @@ impl GlobalVillageMarketplace {
 
         escrow.status = Status::Completed as u32;
 
-        env.storage().persistent().set(
-            &ESCROW_KEY,
-            &escrow,
+        env.storage()
+            .persistent()
+            .set(&ESCROW_KEY, &escrow);
+
+        env.events().publish(
+            (symbol_short!("done"),),
+            escrow.amount,
         );
     }
 
     // View escrow
-    pub fn get_order(env: Env) -> Escrow {
+    pub fn get_order(
+        env: Env,
+    ) -> Option<Escrow> {
         env.storage()
             .persistent()
             .get(&ESCROW_KEY)
-            .unwrap()
     }
 }
