@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 import {
   isConnected,
   getAddress,
@@ -8,6 +8,8 @@ import { Client, networks } from "../contracts/gvm-client/src";
 type ContractError = string | null;
 
 interface UseSorobanContractReturn {
+  client: Client;
+  address: string | null;
   loading: boolean;
   error: ContractError;
   publicKey: string | null;
@@ -31,13 +33,14 @@ const RPC_URL = "https://soroban-testnet.stellar.org";
 const NETWORK_PASSPHRASE = networks.testnet.networkPassphrase;
 const CONTRACT_ID = networks.testnet.contractId;
 
+const CONTRACT_OPTS = {
+  contractId: CONTRACT_ID,
+  networkPassphrase: NETWORK_PASSPHRASE,
+  rpcUrl: RPC_URL,
+} as const;
+
 function createClient(publicKey: string): Client {
-  return new Client({
-    contractId: CONTRACT_ID,
-    networkPassphrase: NETWORK_PASSPHRASE,
-    rpcUrl: RPC_URL,
-    publicKey,
-  });
+  return new Client({ ...CONTRACT_OPTS, publicKey });
 }
 
 export function useSorobanContract(): UseSorobanContractReturn {
@@ -45,6 +48,11 @@ export function useSorobanContract(): UseSorobanContractReturn {
   const [error, setError] = useState<ContractError>(null);
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const pkRef = useRef<string | null>(null);
+
+  const readOnlyClient = useMemo(
+    () => new Client({ ...CONTRACT_OPTS, publicKey: undefined as unknown as string }),
+    [],
+  );
 
   const connect = useCallback(async (): Promise<string> => {
     try {
@@ -176,6 +184,8 @@ export function useSorobanContract(): UseSorobanContractReturn {
   }, [withTx]);
 
   return {
+    client: readOnlyClient,
+    address: publicKey,
     loading,
     error,
     publicKey,

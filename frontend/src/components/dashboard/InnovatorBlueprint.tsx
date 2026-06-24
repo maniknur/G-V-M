@@ -1,9 +1,31 @@
 import { useState } from "react";
+import { processBlueprintFile, xlmToStroops } from "../../utils/crypto";
 
 const CREAM = "#FDFBF7";
 const CHARCOAL = "#1E293B";
 const GREEN600 = "#16A34A";
 const GREEN700 = "#15803D";
+
+const ADMIN_PUBLIC_KEY = "GB7PX6UVGMO6565H5HGW6NF56W2S25BOXJZT74PW2YXMEC4L4DFECX5S";
+
+interface PublishData {
+  title: string;
+  category: string;
+  price: number;
+  priceStroops: string;
+  ipfsHash: string;
+  adminEncryptedHash: string;
+  fileName: string;
+  fileSize: number;
+}
+
+interface InnovatorBlueprintProps {
+  totalEarnings: number;
+  activeEscrows: number;
+  blueprintsSold: number;
+  categories: string[];
+  onPublish: (data: PublishData) => void;
+}
 
 export default function InnovatorBlueprint({
   totalEarnings,
@@ -11,27 +33,62 @@ export default function InnovatorBlueprint({
   blueprintsSold,
   categories,
   onPublish,
-}) {
+}: InnovatorBlueprintProps) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Agriculture");
   const [price, setPrice] = useState("");
-  const [alertMsg, setAlertMsg] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [encrypting, setEncrypting] = useState(false);
+  const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
-  const flash = (msg, ms) => {
+  const flash = (msg: string, ms?: number) => {
     setAlertMsg(msg);
     setTimeout(() => setAlertMsg(null), ms || 3000);
   };
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !price) {
       flash("Please fill in all required fields.", 2500);
       return;
     }
-    onPublish({ title: title.trim(), category, price: Number(price) });
-    setTitle("");
-    setCategory("Agriculture");
-    setPrice("");
+    if (!selectedFile) {
+      flash("Please select a blueprint file to upload.", 2500);
+      return;
+    }
+
+    setEncrypting(true);
+    flash("Encrypting blueprint file...", 2000);
+
+    try {
+      const encryption = await processBlueprintFile(selectedFile, ADMIN_PUBLIC_KEY);
+      const priceStroops = xlmToStroops(Number(price));
+
+      onPublish({
+        title: title.trim(),
+        category,
+        price: Number(price),
+        priceStroops: priceStroops.toString(),
+        ipfsHash: encryption.ipfsHash,
+        adminEncryptedHash: encryption.adminEncryptedHash,
+        fileName: encryption.fileName,
+        fileSize: encryption.fileSize,
+      });
+
+      setTitle("");
+      setCategory("Agriculture");
+      setPrice("");
+      setSelectedFile(null);
+    } catch (err: any) {
+      flash("Encryption failed: " + (err?.message || "Unknown error"), 4000);
+    } finally {
+      setEncrypting(false);
+    }
   };
 
   return (
@@ -104,7 +161,7 @@ export default function InnovatorBlueprint({
                 className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-100"
                 style={{ background: CREAM }}
               >
-                {categories.map((cat) => (
+                {categories.map((cat: string) => (
                   <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
@@ -129,32 +186,47 @@ export default function InnovatorBlueprint({
             </div>
 
             {/* File drop-zone */}
-            <div className="mb-6">
+            <div className="mb-4">
               <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
                 Technical Blueprint File
               </label>
-              <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6 text-center transition-colors hover:border-green-400 hover:bg-green-50/30">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="mb-2 h-8 w-8 text-gray-300"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                </svg>
-                <p className="mb-1 text-xs font-medium text-gray-500">Drag &amp; drop or click to browse</p>
-                <p className="text-xs text-gray-400">PDF, CAD, or ZIP (Max 50 MB)</p>
-              </div>
+              <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6 text-center transition-colors hover:border-green-400 hover:bg-green-50/30">
+                {selectedFile ? (
+                  <div className="flex flex-col items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-xs font-medium text-green-700">{selectedFile.name}</p>
+                    <p className="text-xs text-gray-400">{(selectedFile.size / 1024).toFixed(1)} KB</p>
+                  </div>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="mb-2 h-8 w-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                    </svg>
+                    <p className="mb-1 text-xs font-medium text-gray-500">Drag &amp; drop or click to browse</p>
+                    <p className="text-xs text-gray-400">PDF, CAD, or ZIP (Max 50 MB)</p>
+                  </>
+                )}
+                <input type="file" className="hidden" accept=".pdf,.step,.stp,.zip,.dwg,.dxf" onChange={handleFileChange} />
+              </label>
             </div>
+
+            {/* Encryption progress */}
+            {encrypting && (
+              <div className="mb-4 flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 text-xs font-medium text-blue-700">
+                <span className="h-3 w-3 animate-spin rounded-full border-2 border-blue-300 border-t-blue-600" />
+                Encrypting file with admin public key...
+              </div>
+            )}
 
             <button
               type="submit"
-              className="w-full rounded-lg px-5 py-3 text-sm font-bold text-white transition-all hover:scale-[1.02] active:scale-95"
+              disabled={encrypting}
+              className="w-full rounded-lg px-5 py-3 text-sm font-bold text-white transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
               style={{ background: GREEN600 }}
             >
-              Publish to Marketplace
+              {encrypting ? "Encrypting & Publishing..." : "Publish to Marketplace"}
             </button>
           </form>
         </div>

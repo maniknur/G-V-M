@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import BlueprintDetailModal from "./BlueprintDetailModal";
-import { isConnected, signTransaction, requestAccess } from "@stellar/freighter-api";
-import { Client, networks } from "../../contracts/gvm-client/src";
+import { isConnected, requestAccess } from "@stellar/freighter-api";
 import { BLUEPRINTS } from "../../data/blueprints";
 import seedResults from "../../data/seed-results.json";
 import { stroopsToXlm, formatXlm } from "../../utils/xlm";
-
-const RPC_URL = "https://soroban-testnet.stellar.org";
+import { useSorobanContract } from "../../hooks/useSorobanContract";
 
 function blueprintNumericId(rawId) {
   var s = String(rawId || "0");
@@ -22,6 +20,7 @@ export default function BrowseSolutions({ products, handleBuy, handleBuySuccess 
   const [contractBlueprints, setContractBlueprints] = useState([]);
   const [fetchingOnChain, setFetchingOnChain] = useState(true);
   const [adminPublicKey, setAdminPublicKey] = useState(null);
+  const { client, connect, addBlueprint } = useSorobanContract();
   const allProducts = [...contractBlueprints, ...BLUEPRINTS.filter((b) => {
     const n = Number(String(b.id || "").replace(/\D/g, "")) % 100;
     return !contractBlueprints.some((c) => c.onChainId === n);
@@ -36,12 +35,6 @@ export default function BrowseSolutions({ products, handleBuy, handleBuySuccess 
     (async () => {
       try {
         setFetchingOnChain(true);
-        const client = new Client({
-          contractId: networks.testnet.contractId,
-          networkPassphrase: networks.testnet.networkPassphrase,
-          rpcUrl: RPC_URL,
-          publicKey: undefined,
-        });
 
         const fetched = [];
         for (let id = 0; id < 20; id++) {
@@ -96,7 +89,7 @@ export default function BrowseSolutions({ products, handleBuy, handleBuySuccess 
       }
     })();
     return () => { cancelled = true; };
-  }, []);
+  }, [client]);
 
   useEffect(() => {
     (async () => {
@@ -120,31 +113,11 @@ export default function BrowseSolutions({ products, handleBuy, handleBuySuccess 
     setSeedProgress("Connecting to wallet...");
 
     try {
-      const conn = await isConnected();
-      if (!conn || !conn.isConnected) {
-        alert("Please unlock Freighter wallet first.");
-        setSeeding(false);
-        return;
-      }
-
-      const access = await requestAccess();
-      if (access.error) {
-        alert("Freighter access denied. Please unlock and approve.");
-        setSeeding(false);
-        return;
-      }
-      const address = access.address;
-      const client = new Client({
-        contractId: networks.testnet.contractId,
-        networkPassphrase: networks.testnet.networkPassphrase,
-        rpcUrl: RPC_URL,
-        publicKey: address,
-      });
+      await connect();
 
       for (let i = 0; i < BLUEPRINTS.length; i++) {
         const bp = BLUEPRINTS[i];
         const numericId = blueprintNumericId(bp.id);
-        const creatorAddr = bp.metadata?.creatorAddress || address;
         const stroop = bp.metadata?.pricing?.amountInStroop || "0";
         const ipfsHash = bp.folder_contents?.resource?.public_links?.[0]?.url
           || `ipfs://blueprints/${bp.id}`;
@@ -152,21 +125,7 @@ export default function BrowseSolutions({ products, handleBuy, handleBuySuccess 
         setSeedProgress(`Seeding ${i + 1}/${BLUEPRINTS.length}: ${bp.metadata?.title || bp.id}...`);
 
         try {
-          const tx = await client.add_blueprint({
-            creator: creatorAddr,
-            price: BigInt(stroop),
-            ipfs_hash: ipfsHash,
-          }, {
-            signTransaction: async (txXdr) => {
-              const signed = await signTransaction(txXdr, {
-                networkPassphrase: networks.testnet.networkPassphrase,
-                address,
-              });
-              return signed.signedTxXdr;
-            },
-          });
-
-          const result = await tx.signAndSend();
+          const result = await addBlueprint(BigInt(stroop), ipfsHash);
           setSeedLog((prev) => [...prev, {
             id: bp.id,
             status: "success",
@@ -192,6 +151,7 @@ export default function BrowseSolutions({ products, handleBuy, handleBuySuccess 
       setSeeding(false);
       setTimeout(() => setSeedProgress(""), 5000);
     }
+
   };
 
   const getWoodStyle = (idx) => {

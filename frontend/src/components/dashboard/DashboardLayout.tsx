@@ -5,10 +5,10 @@ import InnovatorBlueprint from "./InnovatorBlueprint";
 import WalletConnect from "../WalletConnect";
 import { isConnected, getAddress, signTransaction } from "@stellar/freighter-api";
 import { Client, networks } from "../../contracts/gvm-client/src";
+import { useSorobanContract } from "../../hooks/useSorobanContract";
 
 const NATIVE_XLM_SAC =
   "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD";
-const RPC_URL = "https://soroban-testnet.stellar.org";
 
 /* ------------------------------------------------------------------ */
 /*  Shared constants + mock data                                      */
@@ -34,6 +34,8 @@ export default function DashboardLayout({ onDisconnect }) {
   const [notification, setNotification] = useState(null);
   const [address, setAddress] = useState(null);
 
+  const { client, connect, buyBlueprintNft } = useSorobanContract();
+
   /* ---------- notification helper ---------- */
   const flash = (msg, ms) => {
     setNotification(msg);
@@ -48,13 +50,6 @@ export default function DashboardLayout({ onDisconnect }) {
       const { address: addr } = await getAddress();
       if (!addr) return;
       setAddress(addr);
-
-      const client = new Client({
-        contractId: networks.testnet.contractId,
-        networkPassphrase: networks.testnet.networkPassphrase,
-        rpcUrl: RPC_URL,
-        publicKey: undefined,
-      });
 
       const found = [];
       for (let id = 0; id < 20; id++) {
@@ -84,7 +79,7 @@ export default function DashboardLayout({ onDisconnect }) {
         });
       }
     } catch {}
-  }, []);
+  }, [client]);
 
   useEffect(() => {
     fetchOnChainPurchases();
@@ -110,42 +105,12 @@ export default function DashboardLayout({ onDisconnect }) {
   /* ---------- handleBuyViaEscrow ---------- */
   const handleBuyViaEscrow = async (blueprint) => {
     try {
-      const connected = await isConnected();
-      if (!connected || !connected.isConnected) {
-        flash("Please install or unlock Freighter Wallet.", 4000);
-        return;
-      }
-
-      const { address } = await getAddress();
-
-    const price = blueprint.metadata?.pricing?.amountInXlm ?? blueprint.price;
+      const price = blueprint.metadata?.pricing?.amountInXlm ?? blueprint.price;
       const bpId = blueprint.id ? Number(String(blueprint.id).replace(/\D/g, "")) % 100 : 0;
 
-      const client = new Client({
-        contractId: networks.testnet.contractId,
-        networkPassphrase: networks.testnet.networkPassphrase,
-        rpcUrl: RPC_URL,
-        publicKey: address,
-      });
+      await connect();
 
-      const tx = await client.buy_blueprint_nft(
-        {
-          token_address: NATIVE_XLM_SAC,
-          buyer: address,
-          blueprint_id: bpId,
-        },
-        {
-          signTransaction: async (txXdr) => {
-            const signed = await signTransaction(txXdr, {
-              networkPassphrase: networks.testnet.networkPassphrase,
-              address,
-            });
-            return signed.signedTxXdr;
-          },
-        },
-      );
-
-      const result = await tx.signAndSend();
+      const result = await buyBlueprintNft(NATIVE_XLM_SAC, bpId);
       console.log("Escrow TX confirmed:", result.txHash);
 
       handleBuySuccess(blueprint);
@@ -182,10 +147,60 @@ export default function DashboardLayout({ onDisconnect }) {
   };
 
   /* ---------- Tab 3: Publish Blueprint ---------- */
-  const handlePublish = (newProduct) => {
-    setProducts((prev) => [{ id: Date.now(), ...newProduct, creator: "GDYOUR...WALLET", rating: 5.0 }, ...prev]);
-    flash(`"${newProduct.title}" published to Marketplace!`);
-    setActiveTab("catalog");
+  const handlePublish = async (newProduct) => {
+    try {
+      const conn = await isConnected();
+      if (!conn?.isConnected) {
+        flash("Please connect Freighter wallet first.", 3000);
+        return;
+      }
+      const { address: creatorAddr } = await getAddress();
+
+      flash("Sending blueprint to Soroban contract...", 2000);
+
+      const client = new Client({
+        contractId: networks.testnet.contractId,
+        networkPassphrase: networks.testnet.networkPassphrase,
+        rpcUrl: RPC_URL,
+        publicKey: creatorAddr,
+      });
+
+      const tx = await client.add_blueprint({
+        creator: creatorAddr,
+        price: BigInt(newProduct.priceStroops || "0"),
+        ipfs_hash: newProduct.ipfsHash || newProduct.adminEncryptedHash || `ipfs://${Date.now()}`,
+      }, {
+        signTransaction: async (txXdr) => {
+          const signed = await signTransaction(txXdr, {
+            networkPassphrase: networks.testnet.networkPassphrase,
+            address: creatorAddr,
+          });
+          return signed.signedTxXdr;
+        },
+      });
+
+      const result = await tx.signAndSend();
+      const txHash = (result as any).sendTransactionResponse?.txHash
+        || (result as any).txHash
+        || (result as any).hash
+        || "";
+
+      setProducts((prev) => [{
+        id: Date.now(),
+        ...newProduct,
+        creator: creatorAddr,
+        txHash,
+      }, ...prev]);
+
+      flash(
+        `"${newProduct.title}" published! TX: ${txHash.slice(0, 14)}...`,
+        5000,
+      );
+      setActiveTab("catalog");
+    } catch (e) {
+      console.error("Publish failed:", e);
+      flash("Failed to publish blueprint. Check console for details.", 4000);
+    }
   };
 
   /* ---------- derived stats for InnovatorBlueprint ---------- */
