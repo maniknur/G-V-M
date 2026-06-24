@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#0a0a1a" stroke="#3b82f6" stroke-width="2"/>
+  <path d="M12 32 Q32 12 52 32 Q32 52 12 32" fill="none" stroke="#22c55e" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="22" cy="26" r="2" fill="#22c55e"/>
+  <circle cx="42" cy="38" r="2" fill="#3b82f6"/>
+  <path d="M22 26 Q32 32 42 38" fill="none" stroke="#22c55e" stroke-width="1" stroke-dasharray="2 2">
+    <animate attributeName="stroke-dashoffset" from="4" to="0" dur="1s" repeatCount="indefinite"/>
+  </path>
+  <text x="32" y="52" text-anchor="middle" fill="#3b82f6" font-size="6" font-family="sans-serif">GVM</text>
+</svg>

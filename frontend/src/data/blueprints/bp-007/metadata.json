@@ -1,0 +1,91 @@
+{
+  "id": "bp-007",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Automated BSF Prepupa Self-Harvesting Cage",
+    "category": "Agriculture",
+    "creatorAddress": "GDDWPLVCGOK7UDZPCAOC2AMLLELD7OOZSLK4E356TPKU2ZE3TV5DQ7JY",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 38,
+      "amountInStroop": "380000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Hermetia illucens (Black Soldier Fly) Lifecycle & Behavior",
+          "url": "https://en.wikipedia.org/wiki/Hermetia_illucens"
+        },
+        {
+          "title": "Eawag/Sandec: Practical Guide to Black Soldier Fly Processing",
+          "url": "https://www.eawag.ch/en/department/sandec/publications/bsf/"
+        },
+        {
+          "title": "Appropedia: Open-Source Black Soldier Fly Waste Bioreactor Designs",
+          "url": "https://www.appropedia.org/Black_soldier_fly_bioreactor"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "An automated, IoT-enabled circular agriculture solution that exploits the photophobic migration instinct of mature Black Soldier Fly (BSF) prepupae. By integrating a precisely calibrated 35-degree physical crawl ramp with an ESP32-controlled infrared gating mechanism, this cage achieves 95% automated separation of high-protein larvae from waste streams into harvest bins, completely eliminating manual sorting labor.",
+      "problem_statement": "Smallholder poultry farmers spend 2–4 hours daily hand-sorting BSF larvae from decomposing organic waste, reducing time for other farm activities and limiting scale.",
+      "engineering_solution": "The system utilizes a 35-degree inclined non-porous PVC ramp inside a controlled bioreactor cell, capitalizing on the prepupae's behavior to climb upward searching for dry pupation sites. As larvae ascend, an integrated infrared (IR) proximity sensor array detects movement at the upper boundary node, triggering an energy-efficient ESP32 microprocessor to actuate low-draw servo shutters. The gate opens for a 3-second window, dropping clean prepupae directly into a localized harvest chamber lined with dry sawdust, maintaining high self-sorting efficiency while keeping power consumption minimal.",
+      "bill_of_materials": [
+        { "name": "80L HDZE Heavy-Duty Plastic Bioreactor Bin", "cost_xlm": 15 },
+        { "name": "High-Grip Textured PVC Sheet Ramp (35° Incline)", "cost_xlm": 9 },
+        { "name": "Fine Insect Mesh Netting & Stainless Fastener Screws", "cost_xlm": 6 },
+        { "name": "Aerated Collection Bucket & Lid with Dry Sawdust Bed", "cost_xlm": 9 },
+        { "name": "High-Yield BSF Egg Starter Colony", "cost_xlm": 12 },
+        { "name": "ESP32 DevKitC Microcontroller & Waterproof Enclosure Box", "cost_xlm": 45 },
+        { "name": "Active Infrared Proximity Sensor Array & Servo Motor Shutters", "cost_xlm": 30 }
+      ],
+      "specifications": {
+        "dimensions": "120cm x 80cm x 95cm",
+        "migration_mechanism": "35-degree precisely angled migration ramp",
+        "cad_files_link": "https://github.com/maniknurhadi/bsf-cage-cad/sol-001.step"
+      }
+    },
+    "core_automation": {
+      "wiring_diagram": "ipfs://bafybeih.../wiring-schematic.png",
+      "source_code_repository": "https://github.com/maniknurhadi/bsf-automation-core",
+      "logic_description": "Sensor-triggered barrier shutter mechanism with energy-saving active-sleep calibration thresholds. Infrared proximity array detects mature prepupae ascending the ramp and opens servo-controlled harvest gate for 3-second window."
+    },
+    "guides": {
+      "step_by_step_assembly": [
+        "Phase 1: Assemble the main structural PVC and acrylic support cage.",
+        "Phase 2: Install the 35-degree migration ramp and position the harvest bin at the exit point.",
+        "Phase 3: Wire up the infrared sensor array and secure the servo motor shutters.",
+        "Phase 4: Calibrate sensor thresholds using serial monitor; test with 10 mature larvae.",
+        "Phase 5: Seal all joints with silicone; introduce BSF eggs to organic substrate."
+      ],
+      "operations_maintenance": {
+        "initial_setup": "Introduce advanced larvae at the baseline entry node of the organic substrate layer.",
+        "sensor_care": "Keep sensor lenses free of organic debris to avoid false positives. Wipe with isopropyl alcohol weekly.",
+        "troubleshooting": "If harvest bin overflows or shutter jams, clear the sensor override switch and run manual cycle via ESP32 reset button."
+      }
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GDVCZO...OC3",
+        "text": "Built this in Kenya! Saved me 120 XLM in chicken feed this month. Zero manual sorting.",
+        "date": "2026-06-22"
+      },
+      {
+        "id": 2,
+        "user": "GB2LHS...W6DJ",
+        "text": "Does the ramp angle need adjustment for different humidity levels?",
+        "date": "2026-06-19"
+      }
+    ]
+  }
+}

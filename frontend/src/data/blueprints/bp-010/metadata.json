@@ -1,0 +1,79 @@
+{
+  "id": "bp-010",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Decentralized Hydroponic Fodder Machine",
+    "category": "Agriculture",
+    "creatorAddress": "GA7BRXQG2EPLHSPNLHYSTSTWLLK4E356TPKU2ZE3TV5DQ7JYV9PS",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 61,
+      "amountInStroop": "610000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Hydroponics and Sprouting Feed Production Principles",
+          "url": "https://en.wikipedia.org/wiki/Hydroponics"
+        },
+        {
+          "title": "Appropedia: Low-Cost Decentralized Hydroponic Fodder Systems",
+          "url": "https://www.appropedia.org/Hydroponic_fodder"
+        },
+        {
+          "title": "ScienceDirect: Nutritional Evaluation and Cost-Benefit of Hydroponic Green Fodder",
+          "url": "https://www.sciencedirect.com/science/article/abs/pii/S235251262100057X"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "An ultra-low-cost, off-grid agro-technical blueprint that converts upcycled organic shipping pallets into a decentralized vertical sprouting infrastructure. Utilizing passive gravity drainage and manual micro-misting, this machine accelerates grain germination into high-nutrient green forage mats, bypassing high-cost automated systems entirely to optimize livestock feed self-sufficiency.",
+      "problem_statement": "Smallholder dairy farmers in semi-arid regions expend 55–70% of gross agricultural revenues on commercial concentrate livestock feeds. While 1 kg of raw barley grain can sprout into 6 kg of nutrient-dense green fodder mats, existing automated commercial hydroponic enclosures cost over $2,000, creating an inaccessible capital barrier for off-grid family farms.",
+      "engineering_solution": "The design re-engineers five recycled wooden pallets into a 5-tier modular A-frame vertical growth rack lined with food-grade high-density polyethylene (HDPE) germination trays. Lacking automated solenoid timers or grid-dependent pumps, the system operates via a manual hand-pumped micro-misting wand applied 3x daily. This method controls root-zone saturation without stagnant water accumulation, turning 5 kg of raw barley seed into 30 kg of highly metabolic, enzyme-rich fresh green forage daily within a ultra-compact 2 square meter footprint.",
+      "bill_of_materials": [
+        { "name": "Upcycled Structural Wooden Shipping Pallets (x5)", "cost_xlm": 0 },
+        { "name": "Food-Grade HDPE Germination Tray Liners 60x40cm (x15)", "cost_xlm": 36 },
+        { "name": "High-Pressure Manual Hand-Pump Misting Wand Assembly", "cost_xlm": 24 },
+        { "name": "High-Germination Barley Seed (25 kg Starter Stock)", "cost_xlm": 30 },
+        { "name": "Anti-UV 70% Shade Coefficient Netting Enclosure", "cost_xlm": 18 }
+      ],
+      "specifications": {
+        "dimensions": "5-tier A-frame rack within a 2 sqm footprint",
+        "production_yield": "30 kg of fresh green forage fodder mats every 6-day cycle",
+        "cad_files_link": "https://github.com/maniknurhadi/fodder-machine-cad/sol-010.step"
+      }
+    },
+    "guides": {
+      "step_by_step_build": [
+        "Step 1: Dismantle pallets; cut planks to build 5-tier A-frame rack with 25cm vertical spacing between shelves.",
+        "Step 2: Line each shelf with HDPE trays; drill 3mm drainage holes every 10cm for root aeration.",
+        "Step 3: Soak barley seed in water for 8 hours; spread evenly at 1 kg per tray (1cm depth).",
+        "Step 4: Mist trays 3x daily (morning, noon, evening) using the hand-pump wand; maintain shade net covering.",
+        "Step 5: Harvest on day 6 by lifting the entire root mat; feed directly to livestock. Start new batch daily for continuous supply."
+      ]
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GC2JPL...S7VX",
+        "text": "Cut our dairy feed costs from 180 to 72 XLM/month for 3 cows. Cows love the fresh fodder.",
+        "date": "2026-06-18"
+      },
+      {
+        "id": 2,
+        "user": "GD8MCR...K3HT",
+        "text": "Using this with wheat grain too — works great. Mould issues if you overcrowd the trays.",
+        "date": "2026-06-10"
+      }
+    ]
+  }
+}

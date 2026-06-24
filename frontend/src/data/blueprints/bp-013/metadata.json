@@ -1,0 +1,73 @@
+{
+  "id": "bp-013",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Solar Radiant Floor Heating from Compost",
+    "category": "Eco-Climate",
+    "creatorAddress": "GD8MCRQG2EPLHSPNLHYSTSTWLLK4E356TPKU2ZE3TV5DQ7JYVK3HT",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 58,
+      "amountInStroop": "580000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Composting Methods, Heat Recovery, and The Jean Pain System",
+          "url": "https://en.wikipedia.org/wiki/Compost#Heat_recovery"
+        },
+        {
+          "title": "Appropedia: Open-Source Compost Water Heating Engineering Guide",
+          "url": "https://www.appropedia.org/Compost_water_heater"
+        },
+        {
+          "title": "ScienceDirect: Experimental Evaluation of Bio-Thermal Energy Recovery from Hot Compost",
+          "url": "https://www.sciencedirect.com/science/article/abs/pii/S096014811630104X"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "An off-grid, zero-emission hydronic heating infrastructure that captures bio-thermal energy from aerobic organic decomposition. By embedding closed-loop cross-linked polyethylene (PEX) heat exchangers within a high-density compost pile, this blueprint utilizes a fully passive thermosiphon fluid loop to deliver continuous underfloor radiant warmth without fuel or utility dependencies.",
+      "problem_statement": "High-altitude smallholder farming communities burn 3–5 tonnes of vital forest firewood per household annually just for seasonal space heating. This practices drives severe local deforestation, triggers debilitating respiratory illnesses from indoor smoke inhalation, and locks agrarian households into loops of intensive fuel-gathering labor.",
+      "engineering_solution": "The thermodynamic setup utilizes a 3-cubic-metre localized hot-compost bioreactor strictly balanced at a 30:1 Carbon-to-Nitrogen (C:N) ratio to stimulate hyper-thermophilic aerobic microbial action, generating a sustained internal core temperature of 55–65°C for 6–8 weeks. Closed-loop 16mm PEX tubing submersed within this core serves as a liquid-to-liquid heat exchanger. As water inside the embedded coils absorbs bio-heat, its density drops, triggering a fully passive, non-mechanical thermosiphon fluid movement. This thermodynamic cycle pumps hot water upward to a manifold, transferring radiant thermal energy across a 20 sqm indoor floor slab to stabilize an ambient living temperature of 24°C with zero mechanical pumps, electricity, or solid-fuel inputs.",
+      "bill_of_materials": [
+        { "name": "Oxygen-Barrier High-Density PEX Tubing Coil (16mm x 50m)", "cost_xlm": 54 },
+        { "name": "Brass Distribution Manifold & High-Temperature Thermosiphon Check Valve", "cost_xlm": 30 },
+        { "name": "Pre-Insulated Copper Riser Fluid Conduit Pipes (x2)", "cost_xlm": 24 },
+        { "name": "High-Nitrogen/Carbon Aerobic Compost Matrix Stock (Manure, Straw, Greens)", "cost_xlm": 15 },
+        { "name": "Digital Waterproof Long-Stem Core Probe Thermometer", "cost_xlm": 12 }
+      ],
+      "specifications": {
+        "dimensions": "3-cubic-metre adjacent thermal compost mass",
+        "heat_exchange": "Thermosiphon fluid dynamics loop under 20 sqm floor slab",
+        "cad_files_link": "https://github.com/maniknurhadi/compost-heating-cad/sol-013.step"
+      }
+    },
+    "guides": {
+      "step_by_step_build": [
+        "Step 1: Lay out the PEX coil in a spiral pattern across the target floor area; embed in 5cm sand bed under floor slab.",
+        "Step 2: Build a 3m3 compost pile adjacent to the building; layer browns (straw) and greens (manure) at 30:1 C:N ratio.",
+        "Step 3: Embed a second PEX coil (heat capture coil) in the centre of the compost pile at 80cm depth.",
+        "Step 4: Connect both coils to the manifold with insulated copper risers; fill system with water and bleed air.",
+        "Step 5: Monitor compost core temperature; turn the pile on day 21 to sustain heat output for a second 6-week cycle."
+      ]
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GD7WPB...M3RF",
+        "text": "Heated our 25 sqm community library through a Himalayan winter. Compost reached 62°C.",
+        "date": "2026-06-17"
+      }
+    ]
+  }
+}

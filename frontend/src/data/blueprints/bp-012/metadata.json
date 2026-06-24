@@ -1,0 +1,73 @@
+{
+  "id": "bp-012",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Windcatcher Passive Air Conditioning Schema",
+    "category": "Eco-Climate",
+    "creatorAddress": "GD8MCRQG2EPLHSPNLHYSTSTWLLK4E356TPKU2ZE3TV5DQ7JYVK3HT",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 44,
+      "amountInStroop": "440000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Windcatcher (Badgir) Architectural & Aerodynamic Principles",
+          "url": "https://en.wikipedia.org/wiki/Windcatcher"
+        },
+        {
+          "title": "Appropedia: Open-Source Passive Cooling & Ventilation Designs",
+          "url": "https://www.appropedia.org/Passive_cooling"
+        },
+        {
+          "title": "ScienceDirect: Aerodynamic and Thermal Performance Analysis of Windcatcher Systems",
+          "url": "https://www.sciencedirect.com/science/article/abs/pii/S036013231200192X"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "An off-grid passive HVAC infrastructure blueprint inspired by traditional Persian Badgir engineering. By utilizing a multi-directional structural tower core paired with sub-surface capillary evaporative media, this schema exploits natural wind pressure differentials to capture, cool, and circulate fresh atmospheric streams into living spaces with zero utility dependency.",
+      "problem_statement": "Rapidly urbanizing hot-climate environments suffer from extreme heat island effects, forcing households to deploy high-wattage (1,500W+) mechanical AC units. This continuous cooling demand overloads regional energy grids, drives skyrocketing carbon emissions, and financially excludes over 60% of low-income families from safe indoor thermal comfort.",
+      "engineering_solution": "The design features a 2.5m vertical square-section tower framework housing four isolated wind-scoop quadrants configured to capture omni-directional prevailing boundary layer winds. As air stream energy impacts the windward quadrant, a high-pressure zone is generated, forcing air downward. The moving mass crosses a gravity-saturated porous cellulose matrix where fluid latent heat conversion occurs via rapid micro-droplet vaporization. This thermodynamic drop drives cooled, dense air into internal living zones through a floor-level low-velocity diffuser, fueled entirely by fluid buoyancy and kinetic wind shear forces without mechanical fans.",
+      "bill_of_materials": [
+        { "name": "Corrosion-Resistant Galvanised Steel Sheets (1m x 2m, x4)", "cost_xlm": 42 },
+        { "name": "Cross-Fluted Cellulose Evaporative Media Pad (60x60cm)", "cost_xlm": 24 },
+        { "name": "Rigid PVC Downpipe Duct & Heavy-Duty Floor Vent Grill", "cost_xlm": 18 },
+        { "name": "Stainless Steel Condensed Fluid Drip Tray & Overflow Pipe Assembly", "cost_xlm": 12 },
+        { "name": "Aerodynamic Omni-Directional Wind Vane Scoops (x4)", "cost_xlm": 15 }
+      ],
+      "specifications": {
+        "dimensions": "2.5m tall square ventilation tower",
+        "cooling_mechanism": "Passive evaporative fluid-dynamics via directional wind pressure differential",
+        "cad_files_link": "https://github.com/maniknurhadi/windcatcher-cad/sol-012.step"
+      }
+    },
+    "guides": {
+      "step_by_step_build": [
+        "Step 1: Construct a 2.5m tall square tower on the windward side of the building; mount on roof or adjacent wall.",
+        "Step 2: Fabricate four directional scoops from galvanised sheet; weld to tower top facing N/S/E/W.",
+        "Step 3: Install cellulose pad horizontally mid-tower; connect drip tray to a small header tank.",
+        "Step 4: Run PVC duct from tower base through wall to floor-level vent inside the room.",
+        "Step 5: Add insect mesh to all openings; test with incense smoke to verify downward airflow path."
+      ]
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GC2JPL...S7VX",
+        "text": "Dropped our living room from 34°C to 28°C during peak summer. Zero electricity.",
+        "date": "2026-06-19"
+      }
+    ]
+  }
+}

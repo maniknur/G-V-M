@@ -1,252 +1,206 @@
 # 🌍 Global Village Marketplace (GVM)
 
-Global Village Marketplace (GVM) is a blockchain-based escrow marketplace built on the Stellar network using Soroban smart contracts.
+> **Decentralized blueprint IP marketplace. Trustless escrow. Instant settlement. Zero borders.**
 
-The project aims to connect local farmers directly with global buyers through a transparent and trust-minimized escrow system, reducing dependency on intermediaries and enabling secure cross-border trade.
-
-This repository contains a simplified MVP escrow contract deployed and tested on Stellar Testnet.
+Turn local eco-innovations into global assets — powered by **Stellar Soroban** smart contracts.
 
 ---
 
-# 🎯 Problem Statement
+## 🎯 The Problem
 
-Smallholder farmers often face:
+Global farmers and eco-innovators build brilliant, sustainable blueprints — from *automated BSF protein farms* to *gravity-fed solar irrigation systems*. But they have no secure, transparent way to commercialize their intellectual property.
 
-- Limited access to international markets
-- High transaction fees
-- Delayed payments
-- Long intermediary chains reducing profits
+| Barrier | Impact |
+|---------|--------|
+| No IP protection | Creators can't prove ownership |
+| High intermediary fees | Middlemen eat 30–60% of revenue |
+| Slow cross-border payments | Settlements take days or weeks |
+| Zero trust in strangers | Buyers fear plagiarism, sellers fear non-payment |
 
-Global Village Marketplace explores how blockchain-based escrow can help create a more transparent and efficient trading process.
-
----
-
-# 💡 Solution
-
-The platform uses a Soroban smart contract to manage trade agreements between buyers and farmers.
-
-Instead of relying on a central intermediary, transaction states are enforced directly on-chain.
-
-Escrow workflow:
-
-Buyer
-→ Create Order
-
-Buyer
-→ Lock Payment
-
-Farmer
-→ Deliver Goods
-
-Admin / Oracle
-→ Confirm Delivery
-
-Smart Contract
-→ Complete Transaction
+**Result:** The best climate-resilience blueprints stay hidden in village notebooks.
 
 ---
 
-# 🚀 Features
+## 💡 Our Solution
 
-### Escrow Order Creation
+**GVM** is a decentralized blueprint marketplace on the **Stellar network** that solves this with:
 
-Buyers can create a trade agreement specifying:
+- **Soroban smart contracts** — trustless escrow, automated fee splits, on-chain ownership records
+- **NFT-minted blueprints** — each blueprint is a self-contained IPFS folder with media, CAD files, wiring diagrams, and step-by-step build guides
+- **t+5 second finality** — Stellar settlement completes in ~5 seconds at sub-cent cost
+- **5% platform fee** — creators keep 95%, no hidden charges
 
-- Buyer address
-- Farmer address
-- Payment amount
+### How it works
 
-### Payment Locking
-
-The buyer locks funds into escrow before shipment.
-
-### Delivery Confirmation
-
-The order can only be completed after payment has been locked.
-
-### Order Status Tracking
-
-Order states are stored on-chain and can be queried at any time.
-
-### Security Checks
-
-Implemented validations include:
-
-- Amount must be greater than zero
-- Buyer and farmer cannot be the same address
-- Only the original buyer can lock payment
-- Invalid state transitions are prevented
-- Safe storage handling without unwrap-related crashes
-
----
-
-# 🔄 Escrow State Machine
-
-```text
-CREATED
-   │
-   ▼
-LOCKED
-   │
-   ▼
-COMPLETED
 ```
-
-Status Codes:
-
-| Value | Status |
-|---------|---------|
-| 0 | CREATED |
-| 1 | LOCKED |
-| 2 | COMPLETED |
-
----
-
-# 📜 Smart Contract Functions
-
-## create_order()
-
-Creates a new escrow order.
-
-Parameters:
-
-- buyer
-- farmer
-- amount
-
----
-
-## lock_payment()
-
-Locks the escrow payment.
-
-Authorization:
-
-- Buyer signature required
-
----
-
-## confirm_delivery()
-
-Marks the escrow as completed.
-
-Validation:
-
-- Order must be in LOCKED state
-
----
-
-## get_order()
-
-Returns the current escrow information.
-
----
-
-# 🛠 Technology Stack
-
-- Rust
-- Soroban SDK
-- Stellar Testnet
-- Stellar Laboratory
-- Soroban Smart Contracts
-
----
-
-# 📦 Deployment Information
-
-## Network
-
-Stellar Testnet
-
-## Contract ID
-
-```text
-CBNHLV3A3FD75IDYHTF6JW5IZF46EJECB27KGLKQKYMLRMBLMHPGUT7G
-```
-
-## WASM Hash
-
-```text
-fd2b5e10e27e948b4cd06b19432060e40aba30f51941c34b43cf4618ff395ca1
-```
-
-## WASM Size
-
-```text
-3606 bytes
+Creator uploads blueprint → Stored on-chain (IPFS hash)
+        │
+        ▼
+Buyer purchases via Escrow → Funds locked in Soroban smart contract
+        │
+        ▼
+Admin verifies blueprint → Blue tick badge awarded
+        │
+        ▼
+Buyer confirms receipt → 95% to creator, 5% to platform
 ```
 
 ---
 
-# 🔗 Contract Explorer
+## 🔗 Live Deployment (Stellar Testnet)
 
-https://lab.stellar.org/r/testnet/contract/CBNHLV3A3FD75IDYHTF6JW5IZF46EJECB27KGLKQKYMLRMBLMHPGUT7G
+```
+✅ Deployed · ✅ Verified · ✅ 13/13 tests passing
+```
 
----
+```text
+Contract ID : CASY2CBFQ2FO722F5FLMSIUYV5RGFDP2J2N4LU7W7M6P4I7LGM6H3C2P
+Wasm Hash   : 5205e1f299130c368e3a0fa48729b515360846a6bb04b696c67aa2832974cad1
+Wasm Size   : 6,921 bytes (optimized)
+Network     : Stellar Testnet
+```
 
-# 🔗 Deployment Transactions
+🔎 [View on Stellar Laboratory](https://lab.stellar.org/r/testnet/contract/CASY2CBFQ2FO722F5FLMSIUYV5RGFDP2J2N4LU7W7M6P4I7LGM6H3C2P)
 
-## Upload WASM
+### Deploy TX
 
-https://stellar.expert/explorer/testnet/tx/cdff2942bd17bcd7fe8ad5392ea66db3d3761f503abf399f1fa678f9bdd497a6
-
-## Deploy Contract
-
-https://stellar.expert/explorer/testnet/tx/f8b91a69cbe9940fe1b3e9d9356f8bab3071bb750bc9c30feae09877db5d0a68
-
----
-
-# 🧪 Tested Functions
-
-Successfully tested on Stellar Testnet:
-
-- ✅ create_order()
-- ✅ lock_payment()
-- ✅ confirm_delivery()
-- ✅ get_order()
+| Step | Transaction |
+|------|------------|
+| Upload WASM | [200ed9c8...](https://stellar.expert/explorer/testnet/tx/200ed9c86347b3c80f3540ca54aaec4be2d584626ff492f2812872bababb8cc0) |
+| Deploy Instance | [524d3b99...](https://stellar.expert/explorer/testnet/tx/524d3b996a5bb52dbf60b0c478f04c61d1f9528afb54d662250e842323b55e42) |
 
 ---
 
-# 📈 Future Roadmap
+## 🏗 Smart Contract Architecture
 
-## Phase 1 (Current MVP)
+### Exported Functions (7)
 
-- Single escrow order
-- On-chain status tracking
-- Testnet deployment
-- Basic authorization controls
+| Function | Access | Purpose |
+|----------|--------|---------|
+| `initialize(admin)` | admin auth | One-time setup, stores admin address |
+| `add_blueprint(creator, price, ipfs_hash)` | creator auth | Register new blueprint, auto-assign ID |
+| `buy_blueprint_nft(token, buyer, bp_id)` | buyer auth | Fee-split transfer via SAC token, record ownership |
+| `verify_blueprint(admin, bp_id, status)` | admin only | Award/revoke blue-tick badge |
+| `get_blueprint(bp_id)` | public view | Retrieve blueprint metadata |
+| `get_owner(bp_id)` | public view | Check NFT ownership |
+| `get_admin()` | public view | Get platform admin address |
 
-## Phase 2
+### Security Hardening
 
-- Stablecoin integration (USDC)
-- Refund mechanism
-- Multiple orders
-- Escrow expiration
+- ✅ Re-initialization guard (`AlreadyInitialized` panic)
+- ✅ Blue-tick forgery prevention (`is_verified` hardcoded `false`)
+- ✅ Persistent storage for Blueprint & Ownership (optimized gas footprint)
+- ✅ Anti-double-spend (`AlreadyOwned` check before transfer)
+- ✅ `require_auth()` on all mutating functions
+- ✅ Custom `#[contracterror]` enum (7 error variants)
+- ✅ `#[contractevent]` emissions for all state changes
 
-## Phase 3
+### Fee Split
 
-- Freighter wallet integration
-- Farmer dashboard
-- Buyer dashboard
-- Delivery tracking
-
-## Phase 4
-
-- Cooperative verification
-- Anchor integration
-- Oracle-based delivery confirmation
-- Mainnet deployment
-
----
-
-# 🌏 Long-Term Vision
-
-Global Village Marketplace seeks to empower farmers by enabling direct access to global buyers through transparent and low-cost blockchain infrastructure.
-
-The long-term goal is to support fair trade, financial inclusion, and trusted agricultural commerce using Stellar technology.
+```
+PLATFORM_FEE_BPS = 500  // 5%
+Buyer pays 1000 USDC → Creator receives 950 USDC, Platform receives 50 USDC
+```
 
 ---
 
-# 📄 License
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Blockchain | Stellar + Soroban |
+| Smart Contract | Rust (`soroban-sdk = "25"`) |
+| Frontend | React 19 + Vite + Tailwind CSS v4 |
+| Token Standard | SAC (Stellar Asset Contract) — USDC |
+| Storage | IPFS (blueprint folder metadata) |
+| Wallet | Freighter API |
+| Test Framework | `cargo test` + `soroban-sdk` testutils |
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+```bash
+rustup install nightly-2025-07-01
+rustup target add wasm32v1-none --toolchain nightly-2025-07-01
+cargo install stellar-cli --version 27
+```
+
+### Build & Test
+
+```bash
+# Build the contract
+cd contracts/blueprint-marketplace
+stellar contract build
+
+# Run all 13 tests
+cargo test
+```
+
+### Deploy
+
+```bash
+stellar contract deploy \
+  --wasm target/wasm32v1-none/release/blueprint_marketplace.wasm \
+  --source YOUR_KEY_ALIAS \
+  --network testnet
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 📁 Project Structure
+
+```
+G-V-M/
+├── contracts/
+│   └── blueprint-marketplace/     # Soroban smart contract (Rust)
+│       ├── src/lib.rs             # 7 exported functions + 4 events
+│       ├── src/test.rs            # 13 unit tests
+│       ├── Cargo.toml
+│       └── Makefile
+├── frontend/                      # React + Vite + Tailwind
+│   ├── src/components/dashboard/
+│   │   ├── LandingPage.jsx        # Hero + globe
+│   │   ├── BrowseSolutions.jsx    # Blueprint catalog cards
+│   │   ├── BlueprintDetailModal.jsx # IPFS folder detail view
+│   │   ├── InnovatorBlueprint.jsx # Creator upload form
+│   │   └── MyPurchases.jsx        # Buyer purchase history
+│   └── package.json
+├── bindings/                      # TypeScript contract bindings
+└── README.md
+```
+
+---
+
+## 🤝 Collaborate
+
+We're building for impact — not just code. If you're:
+
+- A **blockchain developer** — jump into `contracts/`, write tests, propose fee model optimizations
+- A **frontend engineer** — the UI needs Freighter wallet integration and dynamic IPFS rendering
+- A **farmer, maker, or eco-innovator** — we want to onboard your blueprints as our alpha listings
+- A **researcher / auditor** — audit the Soroban contract, suggest state machine hardening
+
+Open issues, fork the repo, and submit PRs. Attribution guaranteed.
+
+---
+
+## 📬 Call to Action
+
+> **The world's most climate-critical blueprints are sitting in notebooks across villages in Indonesia, Kenya, and the Philippines. Let's tokenize them, protect them, and put them to work.**
+
+**Star this repo. Deploy the contract. List your first blueprint.**
+
+---
 
 MIT License

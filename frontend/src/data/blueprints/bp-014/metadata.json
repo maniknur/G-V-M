@@ -1,0 +1,79 @@
+{
+  "id": "bp-014",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Earth Air Tunnel Geothermal Cooling Exchanger",
+    "category": "Eco-Climate",
+    "creatorAddress": "GDZEWHIBLXIFN4GKOXNXFLAUTXVIC672DMYYNMVSOSETDGKM43KWYQGN",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 79,
+      "amountInStroop": "790000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Ground-to-Air Heat Exchanger (GAHE) Design & Mechanics",
+          "url": "https://en.wikipedia.org/wiki/Ground-to-air_heat_exchanger"
+        },
+        {
+          "title": "Appropedia: Open-Source Earth-Air Tunnel Geothermal Cooling Systems",
+          "url": "https://www.appropedia.org/Earth-air_heat_exchanger"
+        },
+        {
+          "title": "ScienceDirect: Performance Evaluation and Thermal Modeling of Earth-Air Pipe Heat Exchangers",
+          "url": "https://www.sciencedirect.com/science/article/abs/pii/S135943111500351X"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "An off-grid, low-enthalpy geothermal cooling infrastructure blueprint designed to reduce residential cooling loads. By routing fresh atmospheric intake through a deep subsurface pipe matrix, this system leverages the earth's constant thermal inertia to pre-cool high-temperature air streams without mechanical compressors or chemical refrigerants.",
+      "problem_statement": "Conventional mechanical air conditioning accounting for over 15% of peak electrical grid demand in rapidly urbanizing developing regions. With high-end commercial ground-source geothermal HVAC installations costing upwards of $5,000, over 90% of local households are financially excluded from sustainable climate adaptation measures.",
+      "engineering_solution": "The system configures a 20-metre high-density polyethylene (HDPE) corrugated conduit path buried at a subsurface lithospheric depth of 3 meters, where soil temperatures maintain a constant annual baseline of 14°C. Driven by a low-draw 15W solar-powered DC axial fan, ambient 35°C air is drawn through this underground matrix. Convective heat transfer across the high-surface-area corrugated boundaries drops air intake temperatures down to 18–20°C at the building manifold, delivering up to 2,000 CFM of pre-cooled fresh air to a 30 sqm thermal envelope using minimal power.",
+      "bill_of_materials": [
+        { "name": "High-Density Polyethylene (HDPE) Corrugated Heat-Exchange Conduit (150mm x 20m)", "cost_xlm": 75 },
+        { "name": "15W DC Solar-Powered Axial Fan Assembly & 20W Photovoltaic Panel", "cost_xlm": 54 },
+        { "name": "Heavy-Duty Intake Fluid Filter Box & Fine Anti-Insect Mesh Screen", "cost_xlm": 18 },
+        { "name": "Rigid PVC Airway Elbows, Adaptors, & Sealed Couplings", "cost_xlm": 15 },
+        { "name": "Sub-grade Condensate Fluid Drain Trap & Gravity Evacuation Assembly", "cost_xlm": 12 }
+      ],
+      "specifications": {
+        "dimensions": "20-metre corrugated heat-exchange conduit path",
+        "thermal_exchange": "Ground-coupled geothermal cooling via 3m deep subsurface mass matrix",
+        "cad_files_link": "https://github.com/maniknurhadi/earth-tunnel-cad/sol-014.step"
+      }
+    },
+    "guides": {
+      "step_by_step_build": [
+        "Step 1: Excavate a 3m deep trench, 20m long, sloping at 2% away from the building for condensate drainage.",
+        "Step 2: Lay HDPE pipe with 150mm gravel bed underneath; backfill with excavated soil, compacting in 30cm lifts.",
+        "Step 3: Install inlet filter box at the far end with fine insect mesh to prevent rodent entry.",
+        "Step 4: Mount the 15W solar fan at the building wall penetration; wire to a 20W panel with a small charge controller.",
+        "Step 5: Add a condensate drain trap at the lowest point of the pipe run; test airflow with a tissue at room vent."
+      ]
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GB4LXF...N1GW",
+        "text": "Incredible ROI. Our 40°C Rajasthan summer air comes out at 22°C. Built for under 80 XLM total.",
+        "date": "2026-06-22"
+      },
+      {
+        "id": 2,
+        "user": "GA5NQV...T9PH",
+        "text": "How do you handle condensation and mould inside the pipe over long periods?",
+        "date": "2026-06-17"
+      }
+    ]
+  }
+}

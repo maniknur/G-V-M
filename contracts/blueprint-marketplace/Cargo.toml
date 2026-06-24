@@ -1,5 +1,5 @@
 [package]
-name = "notes"
+name = "blueprint-marketplace"
 version = "0.0.0"
 edition = "2021"
 publish = false

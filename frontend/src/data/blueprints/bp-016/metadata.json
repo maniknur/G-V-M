@@ -1,0 +1,68 @@
+{
+  "id": "bp-016",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Gravity-Fed Bio-Sand Clean Water Filter",
+    "category": "Water Sovereignty",
+    "creatorAddress": "GDDWPLVCGOK7UDZPCAOC2AMLLELD7OOZSLK4E356TPKU2ZE3TV5DQ7JY",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 28,
+      "amountInStroop": "280000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Bio-sand Filter Mechanical & Biological Water Treatment Principles",
+          "url": "https://en.wikipedia.org/wiki/Bio-sand_filter"
+        },
+        {
+          "title": "CAWST: Open-Source Bio-sand Filter Technical Project Design Manual",
+          "url": "https://www.cawst.org/resources"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "An off-grid, low-cost decentralized water purification infrastructure blueprint utilizing layered geologic media and a self-sustaining biological community. By combining mechanical depth filtration with active microbial predation, this gravity-driven slow-sand system eliminates waterborne pathogens and turbidity from contaminated surface water sources without chemical additives or active power consumption.",
+      "problem_statement": "Over 783 million people globally continue to experience severe water insecurity due to a total lack of clean drinking water infrastructure. While commercial point-of-use ceramic filters offer localized purification, their high unit costs ($25+ USD) and rapid mechanical clogging issues render them unsustainable in off-grid remote sectors where replacement parts and specialized maintenance protocols are physically unavailable.",
+      "engineering_solution": "The design retrofits a food-grade 200L steel containment vessel into a high-surface-area slow-sand filtration column. Raw influent is introduced over a physical diffuser plate to protect the underlying media bed, passing down through a 50cm column of sieved fine silica sand ($0.15\text{--}0.35\text{mm}$ grain size) supported by a graded medium-to-coarse gravel under-drainage matrix. Pathogen destruction relies on a two-pronged mechanism: immediate mechanical depth-straining paired with bio-filtration via a top-tier active biological layer (schmutzdecke) that matures within a 14-day initialization phase. This self-regulating microbial ecosystem neutralizes >99% of viable E. coli colonies and suspended solids, delivering a regulated, gravity-driven safe yield of 0.4 L/min.",
+      "bill_of_materials": [
+        { "name": "Food-Grade Anti-Corrosive Cylindrical Steel Drum (200L Capacity)", "cost_xlm": 18 },
+        { "name": "Sieved High-Silica Fine Filtration Sand 0.15-0.35mm (60 kg)", "cost_xlm": 15 },
+        { "name": "Washed and Graded Capillary Support Gravel 6-15mm (20 kg)", "cost_xlm": 12 },
+        { "name": "Heavy-Duty PVC Outlet Tap Valve & Perforated Internal Diffuser Plate", "cost_xlm": 12 },
+        { "name": "Fine-Mesh Synthetic Screen Layer (Geotextile Media Separator)", "cost_xlm": 6 }
+      ],
+      "specifications": {
+        "dimensions": "200L container scale profile",
+        "filtration_rate": "0.4 L/min via slow-sand gravity-fed fluid mechanics"
+      }
+    },
+    "guides": {
+      "step_by_step_build": [
+        "Step 1: Cut the drum top off; drill a 20mm hole 5cm from the bottom for the outlet tap.",
+        "Step 2: Layer 10cm of coarse gravel at the base, then 5cm of medium gravel; cover with mesh separator.",
+        "Step 3: Add 50cm of sieved fine sand (0.15–0.35mm grain size), levelling the surface carefully.",
+        "Step 4: Place a diffuser plate (drilled plastic lid) on the sand surface to prevent disturbance when pouring.",
+        "Step 5: Fill with source water and let sit for 2 weeks without use to develop the biological schmutzdecke layer; then filter at 0.4L/min maximum."
+      ]
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GH3BNZ...K8PF",
+        "text": "Tested output at a lab — 99.4% E. coli removal. Our village of 200 people runs 4 of these.",
+        "date": "2026-06-21"
+      }
+    ]
+  }
+}

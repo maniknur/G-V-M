@@ -1,0 +1,73 @@
+{
+  "id": "bp-011",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Evaporative Charcoal Cool Storage Room",
+    "category": "Eco-Climate",
+    "creatorAddress": "GDZEWHIBLXIFN4GKOXNXFLAUTXVIC672DMYYNMVSOSETDGKM43KWYQGN",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 52,
+      "amountInStroop": "520000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Evaporative Cooling Engineering Mechanics & Zeer Pot Principles",
+          "url": "https://en.wikipedia.org/wiki/Evaporative_cooler"
+        },
+        {
+          "title": "Appropedia: Open-Source Charcoal Cool Room Preservation Designs",
+          "url": "https://www.appropedia.org/Charcoal_cooler"
+        },
+        {
+          "title": "ScienceDirect: Technical Evaluation of Passive Evaporative Coolers for Post-Harvest Storage",
+          "url": "https://www.sciencedirect.com/science/article/abs/pii/S025789721630130X"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "An off-grid, zero-electricity post-harvest preservation infrastructure engineered for tropical smallholders. Utilizing a bio-climatic double-brick envelope insulated with a high-surface-area activated charcoal core, this room triggers autonomous heat exchange via capillary drip evaporation, drastically expanding the shelf life of fresh agricultural produce at zero ongoing utility cost.",
+      "problem_statement": "Post-harvest vegetable spoilage eliminates up to 40% of total smallholder crop yields in humid tropical regions due to the absolute absence of affordable cold-chain infrastructure. With commercial grid-dependent or diesel-powered mechanical cooling units costing upwards of $200, local farmers face continuous revenue loss and reduced market access.",
+      "engineering_solution": "The architecture deploys a 2m x 2m inner-and-outer clay brick wall structure enclosing a 15cm geometric cavity filled with highly porous activated charcoal. Water is gravity-fed to a regulated micro-drip line from an elevated 200L reservoir, continuously saturating the charcoal matrix. As high-temperature dry ambient air (up to 35°C) passes through the wet, high-surface-area charcoal boundaries, a steady latent heat of vaporization drop is triggered. This thermodynamic cycle drives down internal temperatures by 8–12°C below ambient conditions, stabilizing a cold storage micro-climate of 14–18°C and 85% relative humidity strictly through vapor pressure dynamics.",
+      "bill_of_materials": [
+        { "name": "Local High-Porosity Kiln-Fired Clay Bricks (x300)", "cost_xlm": 45 },
+        { "name": "High-Surface-Area Granular Activated Charcoal Media (40 kg)", "cost_xlm": 54 },
+        { "name": "200L High-Density Water Reservoir & Gravity Drip Line Kit", "cost_xlm": 30 },
+        { "name": "Thermal Thatch Insulated Shading Roof Framework", "cost_xlm": 21 },
+        { "name": "Analog Precision Volumetric Thermometer & Humidity Sensor", "cost_xlm": 9 }
+      ],
+      "specifications": {
+        "dimensions": "2m x 2m dual-brick structural framework",
+        "thermal_reduction": "8–12°C dynamic internal climate drop via passive charcoal evaporation matrix",
+        "cad_files_link": "https://github.com/maniknurhadi/charcoal-coolroom-cad/sol-011.step"
+      }
+    },
+    "guides": {
+      "step_by_step_build": [
+        "Step 1: Lay a concrete slab base with a 2% drainage slope to one corner.",
+        "Step 2: Build inner and outer brick walls with 15cm gap; leave door opening on north side.",
+        "Step 3: Fill the wall cavity with activated charcoal, tamping lightly every 30cm.",
+        "Step 4: Install drip line along the top of each wall connected to elevated water drum.",
+        "Step 5: Set drip rate at 2–3 litres/hour per wall; adjust based on interior thermometer readings to maintain 85% RH."
+      ]
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GF6YWK...D4BE",
+        "text": "Keeps our tomatoes fresh for 12 days instead of 3. Built for under 55 XLM total.",
+        "date": "2026-06-20"
+      }
+    ]
+  }
+}

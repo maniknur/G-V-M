@@ -1,0 +1,73 @@
+{
+  "id": "bp-015",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Passive Solar Timber Kiln Dehydrator",
+    "category": "Eco-Climate",
+    "creatorAddress": "GDDWPLVCGOK7UDZPCAOC2AMLLELD7OOZSLK4E356TPKU2ZE3TV5DQ7JY",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 33,
+      "amountInStroop": "330000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Wood Drying Technology and Solar Kiln Mechanics",
+          "url": "https://en.wikipedia.org/wiki/Wood_drying#Solar_kiln"
+        },
+        {
+          "title": "Appropedia: Open-Source Solar Timber Kiln Designs",
+          "url": "https://www.appropedia.org/Solar_kiln"
+        },
+        {
+          "title": "USDA Forest Service: Design and Operation of a Solar Heated Lumber Dry Kiln",
+          "url": "https://www.fpl.fs.gov/documnts/fplgtr/fplgtr07.pdf"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "An off-grid, zero-energy bioclimatic seasoning infrastructure engineered for woodworking artisans and small-scale timber producers. Utilizing an optimized sloped multi-wall polycarbonate envelope paired with a high-absorption solar plate matrix, this dehydrator drives autonomous convective fluid loops via stack-effect thermodynamics to cure green lumber uniformly without mechanical grid assets.",
+      "problem_statement": "Rural woodworkers face severe cash-flow constraints due to conventional outdoor air-drying practices requiring 6–12 months of structural seasoning, losing over 15% of total stock value to warp cracking, fungal decay, and localized insect infestations. While commercial electric convection kilns speed up this cycle, their high capital expenditure ($800+) and 2 kW continuous energy load make them inaccessible for off-grid family workshops.",
+      "engineering_solution": "The architecture introduces a 2m x 1m structural envelope featuring a 30-degree sloped, twin-wall polycarbonate solar collector facing strict equatorial alignment. Internal solar radiant heat is captured by a series of high-emissivity, black-coated aluminium absorber plates, elevating internal core temperatures to a balanced range of 45–55°C. This dynamic temperature gradient triggers a natural thermodynamic convection current: denser, cool ambient air enters via lower intake slots, expands as its temperature rises, and flows uniformly through the stacked wood layout. This fluid draft extracts moisture vapor before exiting through adjustable high-elevation vents, successfully seasoning 50 board-feet of raw lumber down to 10% moisture content within a tight 10–14 day cycle entirely via solar-driven mass transfer.",
+      "bill_of_materials": [
+        { "name": "UV-Stabilized Double-Wall Polycarbonate Transparent Sheets (2m x 1m)", "cost_xlm": 36 },
+        { "name": "Upcycled Structural Timber Frame Profiles (Salvaged 2x4 Lumber)", "cost_xlm": 12 },
+        { "name": "High-Emissivity Matte-Black Anodized Aluminium Absorber Racks (x4)", "cost_xlm": 18 },
+        { "name": "Adjustable Airway Butterfly Vents (Top Outlet & Bottom Inlet Assembly)", "cost_xlm": 9 },
+        { "name": "Digital Thermo-Hygrometer Display Probe with Remote Ambient Sensor", "cost_xlm": 9 }
+      ],
+      "specifications": {
+        "dimensions": "2m x 1m solar-absorbent sloped structure",
+        "convection_system": "Passive stack-effect thermodynamic loop via south-facing twinwall matrix",
+        "cad_files_link": "https://github.com/maniknurhadi/solar-kiln-cad/sol-015.step"
+      }
+    },
+    "guides": {
+      "step_by_step_build": [
+        "Step 1: Build the timber box frame with a 30° south-facing slope; ensure all joints are sealed with caulk.",
+        "Step 2: Screw the polycarbonate sheet to the frame; add rubber weatherstripping at all edges.",
+        "Step 3: Install black aluminium racks on rails at 20cm vertical spacing inside the box.",
+        "Step 4: Cut adjustable vents at bottom (inlet) and top ridge (outlet); add insect mesh.",
+        "Step 5: Load green timber with 2cm spacer sticks between layers; close vents at night to retain heat; monitor daily."
+      ]
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GF0XJP...L3DY",
+        "text": "Dried mango wood for furniture in 12 days. Saved 6 months of outdoor seasoning.",
+        "date": "2026-06-18"
+      }
+    ]
+  }
+}

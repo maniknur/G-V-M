@@ -1,0 +1,85 @@
+{
+  "id": "bp-003",
+  "nftTokenId": "CDLZFC3SYJYDZT7KPLIBDBMECW5U67A53Y67SFF47JKRKA66OEBB6CDD",
+  "metadata": {
+    "title": "Thermoelectric Generator Cookstove Attachment",
+    "category": "Renewable Energy",
+    "creatorAddress": "GDZEWHIBLXIFN4GKOXNXFLAUTXVIC672DMYYNMVSOSETDGKM43KWYQGN",
+    "verification": {
+      "isVerified": true,
+      "verifiedBy": "Platform Admin Team",
+      "badge": "Blue Verified Tick"
+    },
+    "pricing": {
+      "amountInXlm": 42,
+      "amountInStroop": "420000000",
+      "platformFeeBps": 500
+    }
+  },
+  "folder_contents": {
+    "resource": {
+      "public_links": [
+        {
+          "title": "Wikipedia: Thermoelectric Generator Principles and Seebeck Effect",
+          "url": "https://en.wikipedia.org/wiki/Thermoelectric_generator"
+        },
+        {
+          "title": "Appropedia: Biomass Cookstove Thermoelectric Generator Research",
+          "url": "https://www.appropedia.org/Thermoelectric_generators_on_cookstoves"
+        }
+      ]
+    },
+    "technical_documents": {
+      "description": "Clamps Peltier modules to the side of any cookstove to convert waste heat into 5V USB electricity while simultaneously cooking meals.",
+      "problem_statement": "1.2 billion people cook on open biomass fires daily, with 80% of thermal energy lost as waste heat while their phones remain uncharged.",
+      "engineering_solution": "Four TEG-12706 Peltier modules are clamped between an aluminium heat collector plate and a water-cooled cold block, generating 8–15W of 5V USB power during a typical 2-hour cooking session.",
+      "bill_of_materials": [
+        {
+          "name": "TEG-12706 Peltier Module (x4)",
+          "cost_xlm": 36
+        },
+        {
+          "name": "Aluminium Heat Collector Plate",
+          "cost_xlm": 18
+        },
+        {
+          "name": "Water-Cooled Cold Block & Hoses",
+          "cost_xlm": 15
+        },
+        {
+          "name": "5V Step-Up USB Regulator Board",
+          "cost_xlm": 9
+        },
+        {
+          "name": "Spring-Loaded Clamp Frame",
+          "cost_xlm": 12
+        }
+      ]
+    },
+    "guides": {
+      "step_by_step_build": [
+        "Step 1: Cut aluminium plate to match cookstove side dimensions; grind surface flat for good thermal contact.",
+        "Step 2: Apply thermal paste to hot side of each Peltier module and press onto collector plate.",
+        "Step 3: Attach water-cooled cold block to the cold side with spring clamps applying 50N pressure.",
+        "Step 4: Wire all four modules in series-parallel configuration to the USB regulator input.",
+        "Step 5: Connect cold block hoses to a gravity-fed water reservoir; place on stove rim during cooking."
+      ]
+    }
+  },
+  "off_chain_interactions": {
+    "comments": [
+      {
+        "id": 1,
+        "user": "GH1MNY...X5BC",
+        "text": "Genius! I get 10W consistently on my charcoal jiko. Charges a phone to 60% per meal.",
+        "date": "2026-06-22"
+      },
+      {
+        "id": 2,
+        "user": "GC9WFT...L2EK",
+        "text": "Any suggestions for thermal paste alternatives available in rural areas?",
+        "date": "2026-06-20"
+      }
+    ]
+  }
+}
