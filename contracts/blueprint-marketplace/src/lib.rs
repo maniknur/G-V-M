@@ -16,10 +16,10 @@ pub enum MarketplaceError {
     NotInitialized = 1,
     BlueprintNotFound = 2,
     Unauthorized = 3,
-    NoOwnerRecorded = 4,
-    InvalidPrice = 5,
-    AlreadyOwned = 6,
-    AlreadyInitialized = 7,
+    InvalidPrice = 4,
+    AlreadyOwned = 5,
+    AlreadyInitialized = 6,
+    BlueprintNotVerified = 7,
 }
 
 #[contracttype]
@@ -27,7 +27,7 @@ pub enum MarketplaceError {
 pub enum DataKey {
     Admin,
     Blueprint(u32),
-    Ownership(u32),
+    Ownership(u32, Address),
     BlueprintCounter,
 }
 
@@ -36,7 +36,10 @@ pub enum DataKey {
 pub struct BlueprintInfo {
     pub creator: Address,
     pub price: i128,
+    // Hash IPFS utama yang berisi file terenkripsi untuk BUYER (hanya bisa dibuka setelah beli)
     pub ipfs_hash: String,
+    // Hash IPFS khusus berisi file terenkripsi menggunakan Public Key ADMIN (untuk tahap review awal)
+    pub admin_encrypted_hash: String, 
     pub is_verified: bool,
 }
 
@@ -73,17 +76,17 @@ impl BlueprintMarketplace {
             panic_with_error!(&env, MarketplaceError::AlreadyInitialized);
         }
         admin.require_auth();
-        env.storage().instance().set(&DataKey::Admin, &admin);
-        env.storage()
-            .instance()
-            .set(&DataKey::BlueprintCounter, &0u32);
+        env.storage().instance().set(&DataAdmin, &admin);
+        env.storage().instance().set(&DataKey::BlueprintCounter, &0u32);
     }
 
+    // Menambahkan parameter `admin_encrypted_hash` dari sisi Frontend
     pub fn add_blueprint(
-        env: Env,
-        creator: Address,
-        price: i128,
-        ipfs_hash: String,
+        env: Env, 
+        creator: Address, 
+        price: i128, 
+        ipfs_hash: String, 
+        admin_encrypted_hash: String
     ) -> u32 {
         creator.require_auth();
 
@@ -96,92 +99,58 @@ impl BlueprintMarketplace {
             .instance()
             .get(&DataKey::BlueprintCounter)
             .unwrap_or(0);
+        
         let blueprint_id = counter;
         counter += 1;
-        env.storage()
-            .instance()
-            .set(&DataKey::BlueprintCounter, &counter);
+        env.storage().instance().set(&DataKey::BlueprintCounter, &counter);
 
         let info = BlueprintInfo {
             creator,
             price,
             ipfs_hash,
+            admin_encrypted_hash, // Berkas aman terenkripsi key admin
             is_verified: false,
         };
 
-        env.storage()
-            .persistent()
-            .set(&DataKey::Blueprint(blueprint_id), &info);
-
+        env.storage().persistent().set(&DataKey::Blueprint(blueprint_id), &info);
         BlueprintAdded { blueprint_id }.publish(&env);
 
         blueprint_id
     }
 
-    pub fn buy_blueprint_nft(
-        env: Env,
-        token_address: Address,
-        buyer: Address,
-        blueprint_id: u32,
-    ) {
+    pub fn buy_blueprint(env: Env, token_address: Address, buyer: Address, blueprint_id: u32) {
         buyer.require_auth();
 
-        if env
-            .storage()
-            .persistent()
-            .has(&DataKey::Ownership(blueprint_id))
-        {
-            let owner: Address = env
-                .storage()
-                .persistent()
-                .get(&DataKey::Ownership(blueprint_id))
-                .unwrap_or_else(|| {
-                    panic_with_error!(&env, MarketplaceError::NoOwnerRecorded);
-                    Address::from_string(&String::from_str(&env, ""))
-                });
-            if owner == buyer {
-                panic_with_error!(&env, MarketplaceError::AlreadyOwned);
-            }
+        if env.storage().persistent().has(&DataKey::Ownership(blueprint_id, buyer.clone())) {
+            panic_with_error!(&env, MarketplaceError::AlreadyOwned);
         }
 
-        let blueprint: BlueprintInfo = env
-            .storage()
-            .persistent()
-            .get(&DataKey::Blueprint(blueprint_id))
-            .unwrap_or_else(|| {
-                panic_with_error!(&env, MarketplaceError::BlueprintNotFound);
-                BlueprintInfo {
-                    creator: Address::from_string(&String::from_str(&env, "")),
-                    price: 0,
-                    ipfs_hash: String::from_str(&env, ""),
-                    is_verified: false,
-                }
-            });
+        if !env.storage().persistent().has(&DataKey::Blueprint(blueprint_id)) {
+            panic_with_error!(&env, MarketplaceError::BlueprintNotFound);
+        }
+        let blueprint: BlueprintInfo = env.storage().persistent().get(&DataKey::Blueprint(blueprint_id)).unwrap();
+
+        if !blueprint.is_verified {
+            panic_with_error!(&env, MarketplaceError::BlueprintNotVerified);
+        }
 
         let platform_fee = (blueprint.price * PLATFORM_FEE_BPS) / 10000;
         let creator_share = blueprint.price - platform_fee;
 
-        let admin: Address = env
-            .storage()
-            .instance()
-            .get(&DataKey::Admin)
-            .unwrap_or_else(|| {
-                panic_with_error!(&env, MarketplaceError::NotInitialized);
-                Address::from_string(&String::from_str(&env, ""))
-            });
+        let admin: Address = env.storage().instance().get(&DataKey::Admin).unwrap_or_else(|| {
+            panic_with_error!(&env, MarketplaceError::NotInitialized);
+        });
 
         let token_client = token::Client::new(&env, &token_address);
 
         token_client.transfer(&buyer, &admin, &platform_fee);
         token_client.transfer(&buyer, &blueprint.creator, &creator_share);
 
-        env.storage()
-            .persistent()
-            .set(&DataKey::Ownership(blueprint_id), &buyer);
+        env.storage().persistent().set(&DataKey::Ownership(blueprint_id, buyer.clone()), &true);
 
         BlueprintPurchasedEvent {
             blueprint_id,
-            buyer: buyer.clone(),
+            buyer,
             price: blueprint.price,
             platform_fee,
             creator_share,
@@ -189,84 +158,41 @@ impl BlueprintMarketplace {
         .publish(&env);
     }
 
-    pub fn verify_blueprint(
-        env: Env,
-        admin: Address,
-        blueprint_id: u32,
-        status: bool,
-    ) {
-        let stored_admin: Address = env
-            .storage()
-            .instance()
-            .get(&DataKey::Admin)
-            .unwrap_or_else(|| {
-                panic_with_error!(&env, MarketplaceError::NotInitialized);
-                Address::from_string(&String::from_str(&env, ""))
-            });
+    pub fn verify_blueprint(env: Env, admin: Address, blueprint_id: u32, status: bool) {
+        let stored_admin: Address = env.storage().instance().get(&DataKey::Admin).unwrap_or_else(|| {
+            panic_with_error!(&env, MarketplaceError::NotInitialized);
+        });
 
         if admin != stored_admin {
             panic_with_error!(&env, MarketplaceError::Unauthorized);
         }
         admin.require_auth();
 
-        let mut blueprint: BlueprintInfo = env
-            .storage()
-            .persistent()
-            .get(&DataKey::Blueprint(blueprint_id))
-            .unwrap_or_else(|| {
-                panic_with_error!(&env, MarketplaceError::BlueprintNotFound);
-                BlueprintInfo {
-                    creator: Address::from_string(&String::from_str(&env, "")),
-                    price: 0,
-                    ipfs_hash: String::from_str(&env, ""),
-                    is_verified: false,
-                }
-            });
+        if !env.storage().persistent().has(&DataKey::Blueprint(blueprint_id)) {
+            panic_with_error!(&env, MarketplaceError::BlueprintNotFound);
+        }
+        let mut blueprint: BlueprintInfo = env.storage().persistent().get(&DataKey::Blueprint(blueprint_id)).unwrap();
 
         blueprint.is_verified = status;
-        env.storage()
-            .persistent()
-            .set(&DataKey::Blueprint(blueprint_id), &blueprint);
+        env.storage().persistent().set(&DataKey::Blueprint(blueprint_id), &blueprint);
 
-        BlueprintVerified {
-            blueprint_id,
-            status,
-        }
-        .publish(&env);
+        BlueprintVerified { blueprint_id, status }.publish(&env);
     }
 
+    // --- Getters ---
     pub fn get_blueprint(env: Env, blueprint_id: u32) -> BlueprintInfo {
-        env.storage()
-            .persistent()
-            .get(&DataKey::Blueprint(blueprint_id))
-            .unwrap_or_else(|| {
-                panic_with_error!(&env, MarketplaceError::BlueprintNotFound);
-                BlueprintInfo {
-                    creator: Address::from_string(&String::from_str(&env, "")),
-                    price: 0,
-                    ipfs_hash: String::from_str(&env, ""),
-                    is_verified: false,
-                }
-            })
+        env.storage().persistent().get(&DataKey::Blueprint(blueprint_id)).unwrap_or_else(|| {
+            panic_with_error!(&env, MarketplaceError::BlueprintNotFound);
+        })
     }
 
-    pub fn get_owner(env: Env, blueprint_id: u32) -> Address {
-        env.storage()
-            .persistent()
-            .get(&DataKey::Ownership(blueprint_id))
-            .unwrap_or_else(|| {
-                panic_with_error!(&env, MarketplaceError::NoOwnerRecorded);
-                Address::from_string(&String::from_str(&env, ""))
-            })
+    pub fn has_access(env: Env, blueprint_id: u32, user: Address) -> bool {
+        env.storage().persistent().has(&DataKey::Ownership(blueprint_id, user))
     }
 
     pub fn get_admin(env: Env) -> Address {
-        env.storage()
-            .instance()
-            .get(&DataKey::Admin)
-            .unwrap_or_else(|| {
-                panic_with_error!(&env, MarketplaceError::NotInitialized);
-                Address::from_string(&String::from_str(&env, ""))
-            })
+        env.storage().instance().get(&DataKey::Admin).unwrap_or_else(|| {
+            panic_with_error!(&env, MarketplaceError::NotInitialized);
+        })
     }
 }
