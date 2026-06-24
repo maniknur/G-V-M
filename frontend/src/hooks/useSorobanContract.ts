@@ -3,7 +3,7 @@ import {
   isConnected,
   getAddress,
 } from "@stellar/freighter-api";
-import { Client, networks } from "../contracts/gvm-client/src";
+import { Client, networks } from "../contracts/gvm";
 
 type ContractError = string | null;
 

@@ -6,7 +6,7 @@ import {
   Horizon,
   TransactionBuilder,
 } from "@stellar/stellar-sdk";
-import { Client, networks } from "../../frontend/src/contracts/gvm-client/src";
+import { Client, networks } from "../../frontend/src/contracts/gvm";
 
 const RPC_URL = "https://soroban-testnet.stellar.org";
 

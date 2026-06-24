@@ -76,7 +76,7 @@ impl BlueprintMarketplace {
             panic_with_error!(&env, MarketplaceError::AlreadyInitialized);
         }
         admin.require_auth();
-        env.storage().instance().set(&DataAdmin, &admin);
+        env.storage().instance().set(&DataKey::Admin, &admin);
         env.storage().instance().set(&DataKey::BlueprintCounter, &0u32);
     }
 

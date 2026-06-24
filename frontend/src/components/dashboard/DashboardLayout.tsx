@@ -4,7 +4,7 @@ import MyPurchases from "./MyPurchases";
 import InnovatorBlueprint from "./InnovatorBlueprint";
 import WalletConnect from "../WalletConnect";
 import { isConnected, getAddress, signTransaction } from "@stellar/freighter-api";
-import { Client, networks } from "../../contracts/gvm-client/src";
+import { Client, networks } from "../../contracts/gvm";
 import { useSorobanContract } from "../../hooks/useSorobanContract";
 
 const NATIVE_XLM_SAC =
@@ -180,9 +180,9 @@ export default function DashboardLayout({ onDisconnect }) {
       });
 
       const result = await tx.signAndSend();
-      const txHash = (result as any).sendTransactionResponse?.txHash
-        || (result as any).txHash
-        || (result as any).hash
+      const txHash = result?.sendTransactionResponse?.txHash
+        || result?.txHash
+        || result?.hash
         || "";
 
       setProducts((prev) => [{
